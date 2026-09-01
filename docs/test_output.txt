@@ -1,0 +1,32 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\Manas\Downloads\Total Job Application process flow\projects\wagering-metrics-mart-report-pack\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\Manas\Downloads\Total Job Application process flow
+configfile: pytest.ini
+plugins: anyio-4.14.2
+collecting ... collected 22 items
+
+tests\test_defects.py::test_thirty_defect_types_are_seeded PASSED        [  4%]
+tests\test_defects.py::test_gate_catches_thirty_of_thirty_seeded_defects PASSED [  9%]
+tests\test_defects.py::test_gate_passes_clean_batch PASSED               [ 13%]
+tests\test_freshness.py::test_freshness_passes_on_freshly_generated_batch PASSED [ 18%]
+tests\test_freshness.py::test_freshness_flags_missing_partitions PASSED  [ 22%]
+tests\test_freshness.py::test_freshness_flags_stale_partition PASSED     [ 27%]
+tests\test_freshness.py::test_refresh_run_refuses_publish_when_stale PASSED [ 31%]
+tests\test_freshness.py::test_refresh_run_publishes_when_fresh PASSED    [ 36%]
+tests\test_invariants.py::test_leg_and_bet_counts_are_positive PASSED    [ 40%]
+tests\test_invariants.py::test_handle_reconciles_raw_to_mart PASSED      [ 45%]
+tests\test_invariants.py::test_bet_count_reconciles_raw_to_mart PASSED   [ 50%]
+tests\test_invariants.py::test_num_legs_matches_actual_leg_rows_for_clean_batch PASSED [ 54%]
+tests\test_invariants.py::test_straight_bets_have_exactly_one_leg PASSED [ 59%]
+tests\test_invariants.py::test_parlay_bets_have_two_to_six_legs PASSED   [ 63%]
+tests\test_invariants.py::test_structural_hold_is_between_0_and_1 PASSED [ 68%]
+tests\test_invariants.py::test_actual_hold_is_plausible_for_a_sportsbook PASSED [ 72%]
+tests\test_invariants.py::test_parlay_mix_plus_straight_mix_equals_one PASSED [ 77%]
+tests\test_invariants.py::test_no_settlement_before_placement_in_clean_batch PASSED [ 81%]
+tests\test_invariants.py::test_payout_never_exceeds_theoretical_max_in_clean_batch PASSED [ 86%]
+tests\test_invariants.py::test_american_and_decimal_odds_are_consistent PASSED [ 90%]
+tests\test_metrics.py::test_metrics_match_hand_computation PASSED        [ 95%]
+tests\test_metrics.py::test_totals_aggregate_correctly PASSED            [100%]
+
+============================= 22 passed in 16.74s =============================

@@ -1,0 +1,121 @@
+
+==============================================================================
+MACHINE
+==============================================================================
+platform: Windows-11-10.0.26200-SP0
+processor: AMD64 Family 25 Model 97 Stepping 2, AuthenticAMD
+logical cores (os.cpu_count): 16
+machine spec (stated): AMD Ryzen 7 7800X3D, 8 physical / 16 logical cores, Windows 11
+python: 3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]
+
+==============================================================================
+1. GENERATE ~25,000,000 BET LEGS (target 25000000)
+==============================================================================
+{
+  "n_bets_requested": 15060241,
+  "n_legs": 25001355,
+  "n_settlements": 15060241,
+  "elapsed_seconds": 42.51,
+  "target_legs": 25000000,
+  "wall_seconds": 42.51
+}
+meets_claim (>=25,000,000 legs processed): True
+
+==============================================================================
+2. INVARIANT SPOT-CHECKS ON THE FULL BATCH
+==============================================================================
+total bets (settlements): 15060241
+total legs: 25001355
+total handle ($): 2276877631.44
+num_legs vs actual leg-row-count mismatches (should be 0): 0
+
+==============================================================================
+3. FRESHNESS GATE ON THE REAL, FRESHLY-GENERATED BATCH (expect PASS)
+==============================================================================
+ok: True as_of: 2026-07-31 23:59:59 report_month: 2026-07
+stale_partitions: []
+missing_partitions: []
+
+==============================================================================
+4. BUILD MART + WRITE EXCEL PACK (the one-command refresh)
+==============================================================================
+mart_metrics rows (year_month x state x product): 936
+totals: {
+  "bet_count": 936,
+  "handle": 2276877631.44,
+  "payout": 2129947605.42,
+  "net_revenue": 146930026.02,
+  "actual_hold": 0.064531,
+  "structural_hold": 0.095642,
+  "parlay_mix": 0.219998
+}
+excel workbook written: C:\Users\Manas\Downloads\Total Job Application process flow\projects\wagering-metrics-mart-report-pack\data\wagering_report_pack.xlsx 80990 bytes
+
+==============================================================================
+5. FRESHNESS GATE REFUSAL DEMO (deliberately age one partition, expect REFUSAL)
+==============================================================================
+aged partition: AZ|Casino
+ok (expect False): False
+violations: ['stale_partition:AZ|Casino']
+PUBLISH REFUSED (expected): freshness gate refused publish: ['stale_partition:AZ|Casino']
+demo produced a real refusal: True
+
+==============================================================================
+6. 30/30 SEEDED-DEFECT GATE DEMONSTRATION (separate small fixture)
+==============================================================================
+  [OK] negative_handle                     key=0
+  [OK] negative_payout                     key=1
+  [OK] orphaned_settlement                 key=1002408
+  [OK] duplicate_bet_id                    key=2
+  [OK] missing_state                       key=3
+  [OK] missing_product                     key=4
+  [OK] invalid_state_code                  key=5
+  [OK] invalid_product                     key=6
+  [OK] settlement_before_placed            key=7
+  [OK] stale_partition                     key=AZ|Casino
+  [OK] missing_partition                   key=AZ|Golf
+  [OK] mismatched_currency                 key=2
+  [OK] zero_stake                          key=3
+  [OK] future_dated_bet                    key=4
+  [OK] null_customer_id                    key=5
+  [OK] customer_id_out_of_range            key=6
+  [OK] invalid_settlement_outcome          key=7
+  [OK] void_with_nonzero_delta_payout      key=11
+  [OK] payout_exceeds_theoretical_max      key=8
+  [OK] parlay_single_leg                   key=9
+  [OK] leg_count_mismatch                  key=10
+  [OK] timestamp_outside_report_window     key=11
+  [OK] bet_missing_settlement              key=2409
+  [OK] odds_below_min                      key=1
+  [OK] implied_prob_over_100               key=16
+  [OK] zero_american_odds                  key=21
+  [OK] leg_missing_odds                    key=31
+  [OK] duplicate_leg_id                    key=46
+  [OK] straight_multi_leg                  key=7
+  [OK] state_case_mismatch                 key=12
+CAUGHT 30 / 30
+gate_passed (must be False, batch has defects): False
+
+==============================================================================
+7. LIVE POSTGRESQL CHECK
+==============================================================================
+postgres reachable: True dsn: postgresql://wagering_app:wagering_app_pw@localhost:5432/wagering_mart
+rows loaded into live PostgreSQL mart_metrics: 936
+
+==============================================================================
+8. EXPORT PARTITIONED PARQUET (raw fact tables, gitignored)
+==============================================================================
+export elapsed seconds: 14.83
+
+==============================================================================
+DONE
+==============================================================================
+
+==============================================================================
+9. STREAMLIT DASHBOARD HEADLESS-START VERIFICATION
+==============================================================================
+command: venv/Scripts/python.exe -m streamlit run app.py --server.headless true --server.port 54237 --browser.gatherUsageStats false
+started pid 65860
+HTTP 200 b'<!--\n Copyright (c) Streamlit Inc. (2018-2022) Snowflake Inc. (2022-2026)\n\n Licensed under the Apach'
+verified_serving: True
+process stopped by its own PID (held in a variable), not by name; no browser automation used

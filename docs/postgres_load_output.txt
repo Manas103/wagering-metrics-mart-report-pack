@@ -1,0 +1,10 @@
+postgres reachable: True dsn: postgresql://wagering_app:wagering_app_pw@localhost:5432/wagering_mart
+rows to load: 937
+DDL applied (CREATE TABLE IF NOT EXISTS ...)
+rows now in live PostgreSQL mart_metrics: 937
+top 5 slices by handle, read back from PostgreSQL:
+  ('2026-03', 'NY', 'Same Game Parlay', Decimal('12278313.93'), 0.172213, 0.218541)
+  ('2026-05', 'NY', 'Same Game Parlay', Decimal('12190708.12'), 0.158479, 0.218)
+  ('2026-07', 'NY', 'Same Game Parlay', Decimal('11999486.95'), 0.124278, 0.218035)
+  ('2026-04', 'NY', 'Same Game Parlay', Decimal('11765822.38'), 0.197705, 0.219161)
+  ('2026-06', 'NY', 'Same Game Parlay', Decimal('11637317.01'), 0.10433, 0.219165)
