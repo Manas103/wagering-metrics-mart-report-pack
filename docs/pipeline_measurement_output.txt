@@ -1,0 +1,121 @@
+
+==============================================================================
+MACHINE
+==============================================================================
+platform: Windows-11-10.0.26200-SP0
+processor: AMD64 Family 25 Model 97 Stepping 2, AuthenticAMD
+logical cores (os.cpu_count): 16
+machine spec (stated): AMD Ryzen 7 7800X3D, 8 physical / 16 logical cores, Windows 11
+python: 3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]
+
+==============================================================================
+1. GENERATE ~23,000,000 PIPELINE AND BOOKINGS EVENTS
+==============================================================================
+{
+  "n_opportunities": 645000,
+  "n_pipeline_events": 22779492,
+  "n_bookings_events": 609172,
+  "n_total_events": 23388664,
+  "elapsed_seconds": 19.17,
+  "wall_seconds": 19.18
+}
+meets_claim (>=23,000,000 pipeline+bookings events): True
+
+==============================================================================
+2. FRESHNESS GATE ON THE REAL, FRESHLY-GENERATED BATCH (expect PASS)
+==============================================================================
+ok: True as_of: 2026-10-31 report_month: 2026-10
+stale_partitions: []
+missing_partitions: []
+
+==============================================================================
+3. STAGE-REGRESSION GATE ON THE REAL, FRESHLY-GENERATED BATCH (expect PASS)
+==============================================================================
+ok: True opportunities_checked: 644485
+regressed_opportunity_ids: []
+
+==============================================================================
+4. BUILD MART, WRITE TABLEAU HYPER EXTRACT + EXCEL PACK (the one-command refresh)
+==============================================================================
+mart_metrics rows (year_month x region x product x segment): 1584
+totals: {
+  "bookings": 2879084072.58,
+  "won_count": 161790,
+  "lost_count": 447382,
+  "win_rate": 0.26559,
+  "cycle_time_days_weighted": 56.9,
+  "seller_productivity": 10989.54
+}
+hyper extract written: C:\Users\Manas\Downloads\Auto Job Applier\Total Job Application process flow\projects\wagering-metrics-mart-report-pack\data\sales_pipeline_mart.hyper 262144 bytes, 1584 rows
+hyper extract read back, row count matches: True
+
+==============================================================================
+5. AI-DRAFTED COMMENTARY: SENTENCE-BY-SENTENCE VERIFICATION
+==============================================================================
+30 freshly drafted sentences, blocked: 0 (expect 0)
+24 sentences had their cited figure corrupted
+injected errors caught: 24 / 24
+clean sentences falsely blocked: 0 / 6
+total blocked: 24 / 30
+  Bookings in APAC for Idea Ads (Enterprise) in 2026-10 totaled $6,600,981.19. -> cited 6600981.19 disagrees with mart value 2199993.73 by 200.05%
+  Mid-Market win rate for Idea Ads in APAC during 2026-10 was 1,086.85%. -> cited 1086.85 disagrees with mart value 28.947400000000002 by 3654.57%
+  Pipeline coverage for Idea Ads in APAC (SMB) in 2026-10 stood at 1,024.45x. -> cited 1024.45 disagrees with mart value 8.1504 by 12469.32%
+excel workbook written: C:\Users\Manas\Downloads\Auto Job Applier\Total Job Application process flow\projects\wagering-metrics-mart-report-pack\data\sales_pipeline_report_pack.xlsx 136855 bytes
+
+==============================================================================
+6. FRESHNESS GATE REFUSAL DEMO (deliberately age one partition, expect REFUSAL)
+==============================================================================
+aged partition: APAC|Idea Ads|Enterprise
+ok (expect False): False
+violations: ['stale_partition:APAC|Idea Ads|Enterprise']
+PUBLISH REFUSED (expected): freshness gate refused publish: ['stale_partition:APAC|Idea Ads|Enterprise']
+demo produced a real refusal: True
+
+==============================================================================
+7. STAGE-REGRESSION GATE REFUSAL DEMO (deliberately flip one event's stage, expect REFUSAL)
+==============================================================================
+regressed opp_id: 0
+ok (expect False): False
+violations: ['stage_regression:opp_id=0']
+PUBLISH REFUSED (expected): stage-regression gate refused publish: ['stage_regression:opp_id=0']
+demo produced a real refusal: True
+
+==============================================================================
+8. 30/30 SEEDED-DEFECT GATE DEMONSTRATION (separate small fixture)
+==============================================================================
+  [OK] negative_amount                     key=0
+  [OK] zero_amount                         key=2
+  [OK] missing_region                      key=3
+  [OK] missing_product                     key=4
+  [OK] missing_segment                     key=5
+  [OK] invalid_region                      key=7
+  [OK] invalid_product_name                key=9
+  [OK] invalid_segment                     key=10
+  [OK] region_case_mismatch                key=11
+  [OK] close_before_created                key=12
+  [OK] negative_cycle_days                 key=13
+  [OK] zero_cycle_days                     key=14
+  [OK] duplicate_opp_id                    key=15
+  [OK] null_rep_id                         key=16
+  [OK] rep_id_out_of_range                 key=17
+  [OK] invalid_won_flag                    key=18
+  [OK] future_dated_close                  key=19
+  [OK] timestamp_outside_report_window     key=20
+  [OK] opp_missing_pipeline_events         key=1001198
+  [OK] amount_mismatch_vs_pipeline         key=21
+  [OK] invalid_stage                       key=0
+  [OK] negative_amount_pipeline            key=2
+  [OK] duplicate_event                     key=3
+  [OK] orphaned_pipeline_event             key=2001196
+  [OK] missing_stage                       key=4
+  [OK] event_date_outside_window           key=5
+  [OK] region_mismatch_vs_bookings         key=7
+  [OK] missing_partition                   key=APAC|Idea Ads|Enterprise
+  [OK] stale_partition                     key=APAC|Idea Ads|Mid-Market
+  [OK] stage_regression                    key=1199
+CAUGHT 30 / 30
+gate_passed (must be False, batch has defects): False
+
+==============================================================================
+DONE
+==============================================================================

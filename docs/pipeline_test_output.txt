@@ -1,0 +1,36 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-9.1.1, pluggy-1.7.0 -- C:\Users\Manas\Downloads\Auto Job Applier\Total Job Application process flow\projects\wagering-metrics-mart-report-pack\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\Manas\Downloads\Auto Job Applier\Total Job Application process flow
+configfile: pytest.ini
+plugins: anyio-4.16.0
+collecting ... collected 26 items
+
+tests\test_pipeline_defects.py::test_thirty_defect_types_are_seeded PASSED [  3%]
+tests\test_pipeline_defects.py::test_gate_catches_thirty_of_thirty_seeded_defects PASSED [  7%]
+tests\test_pipeline_defects.py::test_gate_passes_clean_batch PASSED      [ 11%]
+tests\test_pipeline_freshness.py::test_freshness_passes_on_freshly_generated_batch PASSED [ 15%]
+tests\test_pipeline_freshness.py::test_freshness_flags_missing_partitions PASSED [ 19%]
+tests\test_pipeline_freshness.py::test_freshness_flags_stale_partition PASSED [ 23%]
+tests\test_pipeline_freshness.py::test_refresh_run_refuses_publish_when_stale PASSED [ 26%]
+tests\test_pipeline_freshness.py::test_refresh_run_publishes_when_fresh PASSED [ 30%]
+tests\test_pipeline_invariants.py::test_opportunity_and_event_counts_are_positive PASSED [ 34%]
+tests\test_pipeline_invariants.py::test_every_bookings_opp_is_either_won_or_lost PASSED [ 38%]
+tests\test_pipeline_invariants.py::test_cycle_days_and_amounts_are_positive PASSED [ 42%]
+tests\test_pipeline_invariants.py::test_close_date_never_precedes_created_date PASSED [ 46%]
+tests\test_pipeline_invariants.py::test_every_stage_is_in_the_valid_range PASSED [ 50%]
+tests\test_pipeline_invariants.py::test_bookings_reconciles_raw_to_mart PASSED [ 53%]
+tests\test_pipeline_invariants.py::test_won_plus_lost_count_reconciles_raw_to_mart PASSED [ 57%]
+tests\test_pipeline_invariants.py::test_no_pipeline_events_outside_the_report_window PASSED [ 61%]
+tests\test_pipeline_mart.py::test_metrics_match_hand_computation PASSED  [ 65%]
+tests\test_stage_regression.py::test_passes_on_clean_batch PASSED        [ 69%]
+tests\test_stage_regression.py::test_flags_a_deliberately_regressed_opportunity PASSED [ 73%]
+tests\test_stage_regression.py::test_violations_format_includes_opp_id PASSED [ 76%]
+tests\test_ai_commentary.py::test_each_template_drafts_a_sentence_that_verifies_clean PASSED [ 80%]
+tests\test_ai_commentary.py::test_corrupted_figure_is_blocked PASSED     [ 84%]
+tests\test_ai_commentary.py::test_unparseable_sentence_is_blocked PASSED [ 88%]
+tests\test_ai_commentary.py::test_sentence_for_unknown_slice_is_blocked PASSED [ 92%]
+tests\test_ai_commentary.py::test_small_rounding_difference_is_tolerated PASSED [ 96%]
+tests\test_ai_commentary.py::test_publishable_sentences_excludes_blocked PASSED [100%]
+
+============================= 26 passed in 13.17s =============================

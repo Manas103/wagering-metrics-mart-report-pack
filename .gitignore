@@ -13,5 +13,13 @@ data/mart.duckdb
 data/*.wal
 data/wagering_report_pack.xlsx
 
+# Generated data for the sales-pipeline extension: regenerate with
+#   python scripts/run_pipeline_benchmark.py
+# or
+#   python -m sales_pipeline_mart.refresh --generate
+data/sales_pipeline_mart.duckdb
+data/sales_pipeline_mart.hyper
+data/sales_pipeline_report_pack.xlsx
+
 # Streamlit cache
 .streamlit/
